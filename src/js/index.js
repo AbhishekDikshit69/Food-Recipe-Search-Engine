@@ -16,7 +16,20 @@ Contains
 const state ={
 
 };
-window.state=state;
+
+// Restore like recipes on page loads
+window.addEventListener("load",()=>{
+    // Initialising new likes for the current load
+    state.likes=new Likes();
+    // Restoring the previously marked likes(if any) from localStorage
+    state.likes.readStorage();
+    // Toggling the likes button according to their length
+    likesView.toggleLikeMenu(state.likes.getNumLikes());
+    // Rendering result
+    state.likes.likes.forEach(e=>{
+        likesView.renderLike(e);
+    })
+});
 const controlSearch= async ()=>{
     // 1) Get query from view
     const query=searchView.getInput();
@@ -52,7 +65,7 @@ elements.searchResPages.addEventListener("click",e=>{
         const goToPage=parseInt(btn.dataset.goto,10);
         searchView.clearResults();
         searchView.renderResult(state.search.result,goToPage);
-        console.log(goToPage);
+    
     }
 });
 
@@ -79,7 +92,6 @@ const controlRecipe=async ()=>{
         // calculate serving time 
         state.recipe.calcTime();
         state.recipe.calcServing();
-        console.log(state.recipe);
         //render recipe object
         clearLoader();
         recipeView.renderRecipe(state.recipe,state.likes.isLiked(id));
@@ -97,7 +109,7 @@ const controlRecipe=async ()=>{
 ['hashchange','load'].forEach(event=>window.addEventListener(event,controlRecipe));
 
 // Function to handle Shopping List
-state.likes=new Likes();
+
 const controlList=()=>{
     if(!state.list)
         state.list=new List();
@@ -113,7 +125,6 @@ const controlLike =()=>{
     const currentid=state.recipe.id;
     // User hasnt liked this current recipe yet 
     if(!state.likes.isLiked(currentid)){
-        console.log(state.likes.isLiked(currentid));
         // Add this recipe to the state-likes
        const like= state.likes.addLike(currentid,
             state.recipe.title,
@@ -164,7 +175,6 @@ elements.recipe.addEventListener("click",(e)=>{
         recipeView.updateServingIngredients(state.recipe);
     }
     else if(e.target.matches(".recipe_btn_add,.recipe_btn_add *")){
-        console.log("clicked");
         controlList();
     }else if(e.target.matches(".recipe__love,.recipe__love *")){
         controlLike();
