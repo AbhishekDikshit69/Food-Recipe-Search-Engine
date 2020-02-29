@@ -4,7 +4,10 @@ export const elements={
     resultList:document.querySelector(".results__list"),
     searchRes:document.querySelector('.results'),
     searchResPages:document.querySelector('.results__pages'),
-    recipe:document.querySelector(".recipe")
+    recipe:document.querySelector(".recipe"),
+    shopping:document.querySelector(".shopping__list"),
+    likesmenu:document.querySelector(".likes__field"),
+    likeslist:document.querySelector(".likes__list")
 }
 export const renderLoader=parentElement=>{
 const loader= `

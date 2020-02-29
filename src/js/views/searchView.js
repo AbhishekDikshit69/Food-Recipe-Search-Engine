@@ -5,7 +5,7 @@ export const clearResults=()=>{
 elements.resultList.innerHTML="";
 elements.searchResPages.innerHTML="";
 };
-const limitRecipeTitle=(title,limit=18)=>{
+export const  limitRecipeTitle=(title,limit=18)=>{
     const newtitle=[];
     if(title.length >limit){
         title.split(' ').reduce((acc,cur)=>{
@@ -70,3 +70,10 @@ export const renderResult =(recipes,page=1,resultsPerPage=10) =>{
     //Rendering Buttons
     renderButtons(page,recipes.length,resultsPerPage);
 };
+export const highlightSelected=id=>{
+    const arrList=Array.from(document.querySelectorAll(".results__link"));
+    arrList.forEach(el=>{
+        el.classList.remove('results__link--active');
+    })
+    document.querySelector(`.results__link[href="#${id}"]`).classList.add('results__link--active');
+}
